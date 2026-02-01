@@ -47,6 +47,7 @@ namespace MultiSet.Samples.OVRFix
 
         private List<GameObject> _pooledItems = new List<GameObject>();
         private Coroutine _searchCoroutine;
+        private Coroutine _keyboardCoroutine;
 
         public void Awake()
         {
@@ -106,37 +107,74 @@ namespace MultiSet.Samples.OVRFix
         {
             if (searchField == null) return;
             Debug.Log("[OptimizedSelectList] OpenKeyboard called.");
-            StartCoroutine(ForceFocusAndOpenKeyboard());
+            
+            // Decouple: Stop any previous attempt to focus/open to avoid conflicts
+            if (_keyboardCoroutine != null) StopCoroutine(_keyboardCoroutine);
+            _keyboardCoroutine = StartCoroutine(ForceFocusAndOpenKeyboard());
         }
 
         private IEnumerator ForceFocusAndOpenKeyboard()
         {
-            Debug.Log("[OptimizedSelectList] Starting ForceFocusAndOpenKeyboard.");
+            Debug.Log("[OptimizedSelectList] Starting Robust ForceFocusAndOpenKeyboard.");
             
-            // Wait slightly longer for VR controllers to finish their interaction
-            yield return new WaitForSeconds(0.1f);
-            
-            // Force focus repeatedly
-            for (int i = 0; i < 5; i++)
+            // 1. Ensure EventSystem selection
+            if (UnityEngine.EventSystems.EventSystem.current != null)
             {
-                searchField.Select();
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(searchField.gameObject);
+            }
+            
+            // 2. Clear focus first to trigger a fresh select event
+            searchField.DeactivateInputField();
+            yield return null;
+
+            // 3. Request focus with UI updates
+            Canvas.ForceUpdateCanvases();
+            searchField.Select();
+            searchField.ActivateInputField();
+            
+            // 4. Aggressive Focus Loop
+            for (int i = 0; i < 10; i++)
+            {
+                if (searchField.isFocused) break;
+                
                 searchField.ActivateInputField();
                 _isCurrentlyFocused = searchField.isFocused;
-                Debug.Log($"[OptimizedSelectList] Focus attempt {i+1}. Focused: {_isCurrentlyFocused}");
-                if (_isCurrentlyFocused) break;
-                yield return null; 
+                Debug.Log($"[OptimizedSelectList] Focus retry {i+1}. Focused: {_isCurrentlyFocused}");
+                yield return new WaitForSeconds(0.05f); 
             }
 
+            _isCurrentlyFocused = searchField.isFocused;
+
+            // 5. Open Keyboard with Retry
             if (_isCurrentlyFocused)
             {
-                Debug.Log("[OptimizedSelectList] Calling TouchScreenKeyboard.Open with focus confirmed.");
-                var kb = TouchScreenKeyboard.Open(searchField.text, TouchScreenKeyboardType.Default, false, false, false, false, "Start typing...");
+                Debug.Log("[OptimizedSelectList] Calling TouchScreenKeyboard.Open.");
+                
+                // Open keyboard
+                var kb = TouchScreenKeyboard.Open(searchField.text, TouchScreenKeyboardType.Default, true, false, false, false, "Search...");
                 _keyboardObjectStatus = (kb != null) ? "Created" : "Null/Failed";
+                
+                // Wait for it to show up on the system level
+                float timer = 0f;
+                while (timer < 0.5f)
+                {
+                    if (TouchScreenKeyboard.visible || (kb != null && kb.active))
+                    {
+                        Debug.Log("[OptimizedSelectList] Keyboard is now visible/active.");
+                        yield break;
+                    }
+                    timer += 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
+
+                // If still not showing, kick it one more time
+                Debug.LogWarning("[OptimizedSelectList] Keyboard timeout, retrying Open once more.");
+                TouchScreenKeyboard.Open(searchField.text, TouchScreenKeyboardType.Default, true, false, false, false, "Search...");
             }
             else
             {
-                Debug.LogWarning("[OptimizedSelectList] Failed to acquire focus, skipping keyboard open.");
-                _keyboardObjectStatus = "Skipped (No Focus)";
+                Debug.LogError("[OptimizedSelectList] Failed to acquire focus even after retry loop.");
+                _keyboardObjectStatus = "Failed (No Focus)";
             }
         }
 
