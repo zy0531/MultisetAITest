@@ -14,9 +14,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Samples/MultiSet Quest SDK/1.9.2/Sample Scenes/Navigation/NavigationTest.unity
     guid: deb54de37189f4453a22659574814fc1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/MultiSet Quest SDK/1.9.2/Sample Scenes/Navigation/NavigationRemote.unity
     guid: f9aea8d617d624b88afc9736e79c0fca
+  - enabled: 1
+    path: Assets/Samples/MultiSet Quest SDK/1.9.2/Sample Scenes/Navigation/NavigationTestFire.unity
+    guid: aed90d69f273f4c6c9613ab0b41fc700
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: bfa40913ae4b445a2967210054dd8779, type: 2}
