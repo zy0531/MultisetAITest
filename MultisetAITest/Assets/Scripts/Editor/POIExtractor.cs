@@ -32,7 +32,7 @@ namespace MultiSet.Samples.Editor
             public List<POIData> pois = new List<POIData>();
         }
 
-        [MenuItem("MultiSet/Export POIs to JSON")]
+        [MenuItem("POITools/Export POIs to JSON")]
         public static void ExportPOIs()
         {
             POIExportCollection collection = new POIExportCollection();

@@ -18,7 +18,7 @@ namespace MultiSet.Editor
         private string serverResponse = "";
         private bool waitingForResponse = false;
 
-        [MenuItem("MultiSet/Sync POIs to Backend")]
+        [MenuItem("POITools/Sync POIs to Backend")]
         public static void ShowWindow()
         {
             GetWindow<POISyncTool>("POI Sync Tool");

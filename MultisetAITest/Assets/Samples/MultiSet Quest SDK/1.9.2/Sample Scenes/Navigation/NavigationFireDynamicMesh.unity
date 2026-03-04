@@ -38175,8 +38175,7 @@ MonoBehaviour:
   backendUrl: ws://localhost:8000/ws/AI
   connectOnStart: 1
   trackingTarget: {fileID: 7079690332569421265}
-  manualQuery: I want to go to 2014 first and then grab some food at the closet vending
-    mechine around that room
+  manualQuery: guide me to the room 2000 and then grab some food
 --- !u!4 &853795254
 Transform:
   m_ObjectHideFlags: 0
