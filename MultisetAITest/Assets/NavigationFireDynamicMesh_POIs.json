@@ -1,6 +1,6 @@
 {
     "sceneName": "NavigationFireDynamicMesh",
-    "exportTimestamp": "2026-02-23 12:33:50",
+    "exportTimestamp": "2026-02-24 20:35:22",
     "pois": [
         {
             "name": "Room 20T1",
@@ -1513,7 +1513,7 @@
         {
             "name": "Room 1110",
             "title": "Room 1110",
-            "identification": 54,
+            "identification": 174,
             "poiName": "Room 1110",
             "description": "",
             "type": "Room",
