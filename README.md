@@ -16,3 +16,6 @@ This project includes a custom editor tool to extract Points of Interest (POIs) 
 1. Once exported, you can sync the data to the external RAG backend.
 2. In the Unity Editor top menu, go to **POITools -> Sync POIs to Backend**.
 3. This sends an HTTP request to the backend server with the extracted POI data to populate the vector database for the AI assistant.
+
+## Querying the AI
+To send a query to the AI navigation system, use the `RealTimeQueryManager` component attached to the `RealTimeQuery` GameObject in the scene hierarchy.
