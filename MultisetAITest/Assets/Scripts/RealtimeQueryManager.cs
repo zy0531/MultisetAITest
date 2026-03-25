@@ -117,7 +117,8 @@ public class RealtimeQueryManager : MonoBehaviour
     {
         poiCache.Clear();
         // Find all objects with a script named "POI" using reflection-lite approach
-        MonoBehaviour[] allScripts = FindObjectsOfType<MonoBehaviour>();
+        //MonoBehaviour[] allScripts = FindObjectsOfType<MonoBehaviour>();
+        MonoBehaviour[] allScripts = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.InstanceID);
         foreach (var script in allScripts)
         {
             if (script.GetType().Name == "POI")
