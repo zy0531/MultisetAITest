@@ -48,7 +48,7 @@ public class QueryTimer : RealtimeQueryManager
         // but it shouldn't really matter too much imo
         // Also this has to be called before Update since it
         // will consume the response string we're looking for
-        if (responseQueue.Count > 0)
+        if (responseQueue.Count > 0 && SendingQueries)
         {
             end = Time.realtimeSinceStartup;
             responseQueue.TryPeek(out response);
@@ -60,6 +60,16 @@ public class QueryTimer : RealtimeQueryManager
             );
             CurrentQuery++;
             QuerySent = false;
+
+            if (CurrentQuery >= Queries.Count - 1)
+            {
+                using (StreamWriter sw = File.CreateText(CsvFilePath))
+                {
+                    foreach (string line in OutData)
+                        sw.WriteLine(line);
+                }
+                SendingQueries = false;
+            }
         }
 
         base.Update();
