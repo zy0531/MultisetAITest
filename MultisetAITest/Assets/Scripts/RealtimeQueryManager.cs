@@ -21,7 +21,7 @@ public class RealtimeQueryManager : MonoBehaviour
     private bool isQuerying = false;
 
     // Thread-safe queue to process network events on the main thread
-    private ConcurrentQueue<string> responseQueue = new ConcurrentQueue<string>();
+    public ConcurrentQueue<string> responseQueue = new ConcurrentQueue<string>();
 
     // Local cache for resolving IDs to scene objects
     private Dictionary<int, MonoBehaviour> poiCache = new Dictionary<int, MonoBehaviour>();
@@ -104,7 +104,7 @@ public class RealtimeQueryManager : MonoBehaviour
         public float distance;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         RefreshPOICache();
         if (connectOnStart)
@@ -117,7 +117,8 @@ public class RealtimeQueryManager : MonoBehaviour
     {
         poiCache.Clear();
         // Find all objects with a script named "POI" using reflection-lite approach
-        MonoBehaviour[] allScripts = FindObjectsOfType<MonoBehaviour>();
+        //MonoBehaviour[] allScripts = FindObjectsOfType<MonoBehaviour>();
+        MonoBehaviour[] allScripts = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.InstanceID);
         foreach (var script in allScripts)
         {
             if (script.GetType().Name == "POI")
@@ -166,7 +167,7 @@ public class RealtimeQueryManager : MonoBehaviour
         ws.Connect();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         // Process scheduled messages on the main thread
         while (responseQueue.TryDequeue(out string data))

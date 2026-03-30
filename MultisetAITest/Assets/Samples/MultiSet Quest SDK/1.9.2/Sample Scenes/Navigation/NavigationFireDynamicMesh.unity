@@ -38152,7 +38152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 853795254}
-  - component: {fileID: 853795253}
+  - component: {fileID: 853795255}
   m_Layer: 0
   m_Name: RealTimeQuery
   m_TagString: Untagged
@@ -38160,22 +38160,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &853795253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853795252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 372f2ad004abd4799b5c2e1c537f608d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backendUrl: ws://localhost:8000/ws/AI
-  connectOnStart: 1
-  trackingTarget: {fileID: 7079690332569421265}
-  manualQuery: guide me to the room 2000 and then grab some food
 --- !u!4 &853795254
 Transform:
   m_ObjectHideFlags: 0
@@ -38191,6 +38175,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &853795255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853795252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31dd0bf7c7ab153408c4ff4f4d1f4109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backendUrl: ws://localhost:8000/ws/AI
+  connectOnStart: 1
+  trackingTarget: {fileID: 0}
+  manualQuery: Where is the nearest exit?
+  useFile: 0
+  CsvFilePath: 
 --- !u!1001 &853893523
 PrefabInstance:
   m_ObjectHideFlags: 0
